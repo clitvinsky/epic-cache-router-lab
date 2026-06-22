@@ -1,0 +1,39 @@
+[
+  {
+    "panel_id": "p001",
+    "prompt": "Hero and companion stand on a rainlit bridge facing a glass tower.",
+    "characters": ["hero", "companion"],
+    "location": "rainlit_bridge",
+    "camera": "wide",
+    "action": "stand_off",
+    "props": ["glass_tower", "blue_cloak"],
+    "continuity_tags": ["noir_palette", "wet_pavement"],
+    "accepted": true,
+    "edit_depth": 0
+  },
+  {
+    "panel_id": "p002",
+    "prompt": "Hero raises a signal flare while the companion watches from the bridge rail.",
+    "characters": ["hero", "companion"],
+    "location": "rainlit_bridge",
+    "camera": "medium",
+    "action": "raise_flare",
+    "props": ["signal_flare", "blue_cloak"],
+    "continuity_tags": ["noir_palette", "wet_pavement"],
+    "accepted": true,
+    "edit_depth": 1
+  },
+  {
+    "panel_id": "p003",
+    "prompt": "Archivist studies a glowing city map inside the observatory.",
+    "characters": ["archivist"],
+    "location": "observatory",
+    "camera": "close",
+    "action": "study_map",
+    "props": ["city_map", "brass_lamp"],
+    "continuity_tags": ["warm_lamplight"],
+    "accepted": true,
+    "edit_depth": 0
+  }
+]
+

@@ -1,0 +1,57 @@
+[
+  {
+    "request_id": "r001",
+    "prompt": "Hero and companion stand on a rainlit bridge facing a glass tower.",
+    "characters": ["hero", "companion"],
+    "location": "rainlit_bridge",
+    "camera": "wide",
+    "action": "stand_off",
+    "props": ["glass_tower", "blue_cloak"],
+    "continuity_tags": ["noir_palette", "wet_pavement"],
+    "expected_route": "return_cached"
+  },
+  {
+    "request_id": "r002",
+    "prompt": "Hero and companion stand on the bridge, but the cloak should be red.",
+    "characters": ["hero", "companion"],
+    "location": "rainlit_bridge",
+    "camera": "wide",
+    "action": "stand_off",
+    "props": ["glass_tower", "red_cloak"],
+    "continuity_tags": ["noir_palette", "wet_pavement"],
+    "expected_route": "surgical_edit"
+  },
+  {
+    "request_id": "r003",
+    "prompt": "Same bridge beat from a tight low-angle shot as the hero raises a flare.",
+    "characters": ["hero", "companion"],
+    "location": "rainlit_bridge",
+    "camera": "low_angle",
+    "action": "raise_flare",
+    "props": ["signal_flare", "blue_cloak"],
+    "continuity_tags": ["noir_palette", "wet_pavement"],
+    "expected_route": "identity_locked_regen"
+  },
+  {
+    "request_id": "r004",
+    "prompt": "Archivist studies the glowing city map in the observatory.",
+    "characters": ["archivist"],
+    "location": "observatory",
+    "camera": "close",
+    "action": "study_map",
+    "props": ["city_map", "brass_lamp"],
+    "continuity_tags": ["warm_lamplight"],
+    "expected_route": "return_cached"
+  },
+  {
+    "request_id": "r005",
+    "prompt": "Hero enters a desert market with a silver compass.",
+    "characters": ["hero"],
+    "location": "desert_market",
+    "camera": "wide",
+    "action": "enter_market",
+    "props": ["silver_compass"],
+    "continuity_tags": ["midday_sun"],
+    "expected_route": "fresh_generation"
+  }
+]
