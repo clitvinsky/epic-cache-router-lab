@@ -110,6 +110,37 @@ class GenerationPlan:
 
 
 @dataclass(frozen=True)
+class ContinuityMetricResult:
+    """Per-request continuity metrics comparing a request to its matched panel.
+
+    Scores are in [0, 1]. Drift accumulates weighted penalties for changed
+    continuity dimensions; low drift means the prior panel is a safe basis for
+    reuse or editing.
+    """
+
+    request_id: str
+    identity_score: float
+    prop_score: float
+    location_score: float
+    prompt_score: float
+    drift_score: float
+    passed: bool
+    failure_reasons: tuple[str, ...] = field(default_factory=tuple)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "request_id": self.request_id,
+            "identity_score": round(self.identity_score, 3),
+            "prop_score": round(self.prop_score, 3),
+            "location_score": round(self.location_score, 3),
+            "prompt_score": round(self.prompt_score, 3),
+            "drift_score": round(self.drift_score, 3),
+            "passed": self.passed,
+            "failure_reasons": list(self.failure_reasons),
+        }
+
+
+@dataclass(frozen=True)
 class CacheDecision:
     """Explainable router output."""
 

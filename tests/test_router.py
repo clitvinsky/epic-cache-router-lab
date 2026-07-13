@@ -7,9 +7,7 @@ from epic_cache_router_lab.models import PanelRequest, PriorPanel
 from epic_cache_router_lab.router import (
     CacheRouter,
     ROUTE_FRESH,
-    ROUTE_IDENTITY_LOCKED_REGEN,
     ROUTE_RETURN_CACHED,
-    ROUTE_SURGICAL_EDIT,
 )
 
 
@@ -33,13 +31,23 @@ def test_expected_fixture_routes():
     router = CacheRouter(prior)
     decisions = [router.route(req) for req in requests]
 
-    assert [d.route for d in decisions] == [
-        ROUTE_RETURN_CACHED,
-        ROUTE_SURGICAL_EDIT,
-        ROUTE_IDENTITY_LOCKED_REGEN,
-        ROUTE_RETURN_CACHED,
-        ROUTE_FRESH,
-    ]
+    assert all(req.expected_route for req in requests)
+    assert [d.route for d in decisions] == [req.expected_route for req in requests]
+
+
+def test_fixtures_exercise_every_route():
+    prior, requests = load_fixtures()
+    router = CacheRouter(prior)
+    routes = {router.route(req).route for req in requests}
+
+    assert routes == {
+        "return_cached",
+        "surgical_edit",
+        "camera_or_pose_change",
+        "identity_locked_regen",
+        "fresh_generation",
+        "manual_review",
+    }
 
 
 def test_return_cached_has_no_risk_flags():

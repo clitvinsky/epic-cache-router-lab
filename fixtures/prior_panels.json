@@ -34,6 +34,65 @@
     "continuity_tags": ["warm_lamplight"],
     "accepted": true,
     "edit_depth": 0
+  },
+  {
+    "panel_id": "p004",
+    "prompt": "Hero sprints across the rooftop ridge and leaps with a grappling hook.",
+    "characters": ["hero"],
+    "location": "rooftop_ridge",
+    "camera": "wide",
+    "action": "sprint_jump",
+    "props": ["grappling_hook"],
+    "continuity_tags": ["noir_palette", "night_sky"],
+    "accepted": true,
+    "edit_depth": 0
+  },
+  {
+    "panel_id": "p005",
+    "prompt": "Hero haggles with a merchant over a silver compass among spice crates.",
+    "characters": ["merchant", "hero"],
+    "location": "desert_market",
+    "camera": "medium",
+    "action": "haggle_trade",
+    "props": ["silver_compass", "spice_crates"],
+    "continuity_tags": ["midday_sun"],
+    "accepted": true,
+    "edit_depth": 0
+  },
+  {
+    "panel_id": "p006",
+    "prompt": "The queen addresses her silent court from the obsidian throne.",
+    "characters": ["queen"],
+    "location": "throne_room",
+    "camera": "close",
+    "action": "address_court",
+    "props": ["obsidian_throne"],
+    "continuity_tags": ["cold_torchlight"],
+    "accepted": true,
+    "edit_depth": 0
+  },
+  {
+    "panel_id": "p007",
+    "prompt": "Archivist adjusts the great brass telescope beneath the observatory dome.",
+    "characters": ["archivist"],
+    "location": "observatory",
+    "camera": "wide",
+    "action": "adjust_telescope",
+    "props": ["brass_telescope"],
+    "continuity_tags": ["warm_lamplight"],
+    "accepted": true,
+    "edit_depth": 1
+  },
+  {
+    "panel_id": "p008",
+    "prompt": "Archivist trades secrets with the hero beside a sealed ledger in the sunken library.",
+    "characters": ["archivist", "hero"],
+    "location": "sunken_library",
+    "camera": "medium",
+    "action": "trade_secrets",
+    "props": ["sealed_ledger"],
+    "continuity_tags": ["green_glow"],
+    "accepted": true,
+    "edit_depth": 0
   }
 ]
-
