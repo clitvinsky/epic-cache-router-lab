@@ -72,6 +72,44 @@ class PanelRequest:
 
 
 @dataclass(frozen=True)
+class GenerationPlan:
+    """Diffusion-aware execution plan derived from a routing decision.
+
+    Cost and latency values are normalized planning estimates, not vendor
+    pricing or measured model timings.
+    """
+
+    request_id: str
+    route: str
+    generation_mode: str
+    starting_point: str
+    matched_panel_id: str | None
+    requires_model_call: bool
+    requires_review: bool
+    estimated_steps: int
+    estimated_cost_units: float
+    estimated_latency_ms: int
+    risk_flags: tuple[str, ...] = field(default_factory=tuple)
+    rationale: str = ""
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "request_id": self.request_id,
+            "route": self.route,
+            "generation_mode": self.generation_mode,
+            "starting_point": self.starting_point,
+            "matched_panel_id": self.matched_panel_id,
+            "requires_model_call": self.requires_model_call,
+            "requires_review": self.requires_review,
+            "estimated_steps": self.estimated_steps,
+            "estimated_cost_units": round(self.estimated_cost_units, 3),
+            "estimated_latency_ms": self.estimated_latency_ms,
+            "risk_flags": list(self.risk_flags),
+            "rationale": self.rationale,
+        }
+
+
+@dataclass(frozen=True)
 class CacheDecision:
     """Explainable router output."""
 
