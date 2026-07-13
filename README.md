@@ -82,20 +82,29 @@ mode, a starting point, estimated denoising steps, and a normalized cost.
 | `fresh_generation` | `fresh_noise` | `noise` | yes | 1.0 |
 | `manual_review` | `review_only` | `none` | no | 0.1 |
 
-The eval report aggregates these plans into cost-avoidance accounting. On the
-bundled fixtures:
+Each request is also scored against its matched prior panel with continuity
+metrics: identity, prop, location, and prompt overlap plus a weighted drift
+score. Direct reuse that fails those gates counts as unsafe reuse. The eval
+report aggregates plans and metrics. On the bundled fixtures (24 requests
+covering all six routes):
 
 ```text
-total_requests: 5
-model_calls: 3
-avoided_model_calls: 2
-baseline_cost_units: 5.0
-routed_cost_units: 2.2
-estimated_savings_ratio: 0.56
+total_requests: 24
+route_accuracy: 1.0
+unsafe_reuse_count: 0
+review_rate: 0.25
+avg_drift_score: 0.145
+model_calls: 15
+avoided_model_calls: 9
+baseline_cost_units: 24.0
+routed_cost_units: 10.85
+estimated_savings_ratio: 0.548
 ```
 
-Costs are normalized planning estimates, not vendor pricing. The full design,
-including the continuity-eval and optional toy-backend phases, is in
+Costs are normalized planning estimates, not vendor pricing; the numbers
+demonstrate the harness, not production performance. Metric definitions,
+thresholds, and known blind spots are in [docs/eval_card.md](docs/eval_card.md).
+The full design, including the optional toy-backend phase, is in
 [docs/diffusion_router_engineering_spec.md](docs/diffusion_router_engineering_spec.md).
 
 ## Public-Safe Scope
@@ -123,7 +132,8 @@ src/epic_cache_router_lab/
   router.py              Deterministic routing and safety scoring
   execution_router.py    Maps routing decisions to generation execution plans
   cost_model.py          Cost-avoidance accounting over generation plans
-  evals.py               Fixture-based evaluation runner with cost reporting
+  continuity_metrics.py  Identity, prop, location, prompt, and drift scoring
+  evals.py               Fixture-based evaluation runner with cost and continuity reporting
 examples/
   demo_router.py             Small terminal demo
   demo_generation_plan.py    Route -> execution plan and cost summary demo
@@ -136,6 +146,7 @@ docs/
   safety_gates.md
   epic_case_study.md
   diffusion_router_engineering_spec.md
+  eval_card.md
 tests/
 ```
 

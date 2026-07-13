@@ -11,11 +11,27 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_eval_metrics_are_stable():
     report = evaluate(ROOT / "fixtures" / "prior_panels.json", ROOT / "fixtures" / "requests.json")
 
-    assert report["total_requests"] == 5
-    assert report["labeled_requests"] == 5
+    assert report["total_requests"] == 24
+    assert report["labeled_requests"] == 24
     assert report["route_accuracy"] == 1.0
     assert report["unsafe_reuse_count"] == 0
-    assert len(report["decisions"]) == 5
+    assert len(report["decisions"]) == 24
+
+
+def test_eval_report_includes_continuity_metrics():
+    report = evaluate(ROOT / "fixtures" / "prior_panels.json", ROOT / "fixtures" / "requests.json")
+
+    assert len(report["continuity"]) == report["total_requests"]
+    assert 0.0 <= report["avg_drift_score"] <= 1.0
+
+    by_request = {entry["request_id"]: entry for entry in report["continuity"]}
+    for decision in report["decisions"]:
+        result = by_request[decision["request_id"]]
+        if decision["route"] == "return_cached":
+            assert result["passed"] is True
+            assert result["drift_score"] <= 0.25
+        if decision["route"] == "fresh_generation":
+            assert result["passed"] is False
 
 
 def test_eval_report_includes_cost_accounting():

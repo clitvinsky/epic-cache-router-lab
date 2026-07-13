@@ -6,6 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .continuity_metrics import is_unsafe_reuse, score_continuity
 from .cost_model import summarize_costs
 from .execution_router import plan_all
 from .models import PanelRequest, PriorPanel
@@ -21,14 +22,31 @@ def load_requests(path: Path) -> list[PanelRequest]:
 
 
 def evaluate(prior_path: Path, requests_path: Path) -> dict:
-    router = CacheRouter(load_prior_panels(prior_path))
+    prior_panels = load_prior_panels(prior_path)
+    router = CacheRouter(prior_panels)
     requests = load_requests(requests_path)
     decisions = [router.route(req) for req in requests]
+
+    panels_by_id = {panel.panel_id: panel for panel in prior_panels}
+    continuity = [
+        score_continuity(request, panels_by_id.get(decision.matched_panel_id or ""))
+        for decision, request in zip(decisions, requests)
+    ]
 
     labeled = [d for d, r in zip(decisions, requests) if r.expected_route]
     correct = sum(1 for d, r in zip(decisions, requests) if r.expected_route == d.route)
     avoided = sum(1 for d in decisions if d.avoided_generation)
-    unsafe_reuse = sum(1 for d in decisions if d.route == "return_cached" and d.risk_flags)
+    unsafe_reuse = sum(
+        1 for decision, result in zip(decisions, continuity) if is_unsafe_reuse(decision, result)
+    )
+    matched_results = [
+        result for decision, result in zip(decisions, continuity) if decision.matched_panel_id
+    ]
+    avg_drift = (
+        round(sum(r.drift_score for r in matched_results) / len(matched_results), 3)
+        if matched_results
+        else None
+    )
 
     plans = plan_all(decisions)
     cost = summarize_costs(plans)
@@ -49,8 +67,10 @@ def evaluate(prior_path: Path, requests_path: Path) -> dict:
         "unsafe_reuse_count": unsafe_reuse,
         "review_rate": round(cost.review_count / len(requests), 3) if requests else None,
         "avg_safety_score": avg_safety,
+        "avg_drift_score": avg_drift,
         "cost": cost.to_dict(),
         "decisions": [d.to_dict() for d in decisions],
+        "continuity": [result.to_dict() for result in continuity],
     }
 
 

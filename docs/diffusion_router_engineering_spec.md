@@ -1,7 +1,7 @@
 # EPIC Diffusion Router Engineering Spec
 
-Status: Phase 1 (model-aware planning) implemented. Phase 2 (continuity evals)
-next. Phases 3 and 4 are future work.
+Status: Phase 1 (model-aware planning) and Phase 2 (continuity evals)
+implemented. Phases 3 and 4 are future work.
 
 ## 1. Purpose
 
@@ -309,7 +309,7 @@ Optional ML tests (Phase 3):
 Success criteria: no new heavy dependencies, existing tests pass, eval report
 includes cost and avoided-call metrics.
 
-### Phase 2: Continuity Evals
+### Phase 2: Continuity Evals (implemented)
 
 - `continuity_metrics.py`
 - unsafe reuse accounting

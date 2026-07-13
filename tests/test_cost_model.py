@@ -39,10 +39,10 @@ def fresh_decision(request_id: str) -> CacheDecision:
 def test_fixture_plans_report_savings():
     summary = summarize_costs(load_fixture_plans())
 
-    assert summary.total_requests == 5
-    assert summary.model_calls == 3
-    assert summary.avoided_model_calls == 2
-    assert summary.baseline_cost_units == 5.0
+    assert summary.total_requests == 24
+    assert summary.model_calls == 15
+    assert summary.avoided_model_calls == 9
+    assert summary.baseline_cost_units == 24.0
     assert summary.routed_cost_units < summary.baseline_cost_units
     assert summary.estimated_savings_ratio > 0.0
 
