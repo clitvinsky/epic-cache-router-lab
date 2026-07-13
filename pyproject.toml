@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "epic-cache-router-lab"
-version = "0.1.0"
+version = "0.2.0"
 description = "Sanitized reference harness for AI visual cache routing and continuity safety"
 readme = "README.md"
 requires-python = ">=3.10"
