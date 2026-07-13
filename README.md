@@ -154,6 +154,13 @@ docs/
 tests/
 ```
 
+## Used By
+
+[compositional-caching-demo](https://github.com/clitvinsky/compositional-caching-demo)
+imports this library as its decision layer: a visual reuse demo where every
+request routes through `CacheRouter` and the UI shows the route, rationale,
+drift, and cost per request.
+
 ## Case Study
 
 See [docs/epic_case_study.md](docs/epic_case_study.md) for the public-safe
