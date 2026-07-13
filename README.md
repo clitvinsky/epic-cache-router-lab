@@ -1,5 +1,9 @@
 # EPIC Cache Router Lab
 
+[![CI](https://github.com/clitvinsky/epic-cache-router-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/clitvinsky/epic-cache-router-lab/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 Reference harness for cache routing, continuity safety, and human-in-the-loop
 generation workflows for long-form AI visual projects.
 
