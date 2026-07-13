@@ -65,6 +65,13 @@ Run the eval:
 python -m epic_cache_router_lab.evals fixtures/prior_panels.json fixtures/requests.json
 ```
 
+Render the human-readable review report
+(see the committed [sample](docs/sample_eval_report.md), kept current by a test):
+
+```bash
+python -m epic_cache_router_lab.report fixtures/prior_panels.json fixtures/requests.json
+```
+
 Run tests:
 
 ```bash
@@ -138,6 +145,7 @@ src/epic_cache_router_lab/
   cost_model.py          Cost-avoidance accounting over generation plans
   continuity_metrics.py  Identity, prop, location, prompt, and drift scoring
   evals.py               Fixture-based evaluation runner with cost and continuity reporting
+  report.py              Markdown review-report renderer over eval output
 examples/
   demo_router.py             Small terminal demo
   demo_generation_plan.py    Route -> execution plan and cost summary demo
@@ -151,6 +159,7 @@ docs/
   epic_case_study.md
   diffusion_router_engineering_spec.md
   eval_card.md
+  sample_eval_report.md
 tests/
 ```
 
