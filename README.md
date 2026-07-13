@@ -49,6 +49,12 @@ Run the demo:
 python examples/demo_router.py
 ```
 
+Run the generation-plan demo:
+
+```bash
+python examples/demo_generation_plan.py
+```
+
 Run the eval:
 
 ```bash
@@ -60,6 +66,37 @@ Run tests:
 ```bash
 python -m pytest
 ```
+
+## Diffusion-Aware Routing Extension
+
+Routing decides what should happen. The planning layer decides what would
+execute: each `CacheDecision` maps to a `GenerationPlan` with a generation
+mode, a starting point, estimated denoising steps, and a normalized cost.
+
+| Route | Generation mode | Starting point | Model call | Cost units |
+|---|---|---|---:|---:|
+| `return_cached` | `cache` | `cached_asset` | no | 0.0 |
+| `surgical_edit` | `latent_edit` | `prior_latent` | yes | 0.35 |
+| `camera_or_pose_change` | `img2img` | `reference_image` | yes | 0.65 |
+| `identity_locked_regen` | `identity_locked` | `reference_image` | yes | 0.85 |
+| `fresh_generation` | `fresh_noise` | `noise` | yes | 1.0 |
+| `manual_review` | `review_only` | `none` | no | 0.1 |
+
+The eval report aggregates these plans into cost-avoidance accounting. On the
+bundled fixtures:
+
+```text
+total_requests: 5
+model_calls: 3
+avoided_model_calls: 2
+baseline_cost_units: 5.0
+routed_cost_units: 2.2
+estimated_savings_ratio: 0.56
+```
+
+Costs are normalized planning estimates, not vendor pricing. The full design,
+including the continuity-eval and optional toy-backend phases, is in
+[docs/diffusion_router_engineering_spec.md](docs/diffusion_router_engineering_spec.md).
 
 ## Public-Safe Scope
 
@@ -82,11 +119,14 @@ It intentionally excludes:
 
 ```text
 src/epic_cache_router_lab/
-  models.py        Typed records for requests, cached panels, and decisions
-  router.py        Deterministic routing and safety scoring
-  evals.py         Fixture-based evaluation runner
+  models.py              Typed records for requests, cached panels, decisions, and plans
+  router.py              Deterministic routing and safety scoring
+  execution_router.py    Maps routing decisions to generation execution plans
+  cost_model.py          Cost-avoidance accounting over generation plans
+  evals.py               Fixture-based evaluation runner with cost reporting
 examples/
-  demo_router.py   Small terminal demo
+  demo_router.py             Small terminal demo
+  demo_generation_plan.py    Route -> execution plan and cost summary demo
 fixtures/
   prior_panels.json
   requests.json
@@ -95,6 +135,7 @@ docs/
   routing_states.md
   safety_gates.md
   epic_case_study.md
+  diffusion_router_engineering_spec.md
 tests/
 ```
 

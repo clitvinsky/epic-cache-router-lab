@@ -6,6 +6,8 @@ import argparse
 import json
 from pathlib import Path
 
+from .cost_model import summarize_costs
+from .execution_router import plan_all
 from .models import PanelRequest, PriorPanel
 from .router import CacheRouter
 
@@ -28,12 +30,26 @@ def evaluate(prior_path: Path, requests_path: Path) -> dict:
     avoided = sum(1 for d in decisions if d.avoided_generation)
     unsafe_reuse = sum(1 for d in decisions if d.route == "return_cached" and d.risk_flags)
 
+    plans = plan_all(decisions)
+    cost = summarize_costs(plans)
+    route_distribution = {
+        route: sum(1 for d in decisions if d.route == route)
+        for route in sorted({d.route for d in decisions})
+    }
+    avg_safety = (
+        round(sum(d.safety_score for d in decisions) / len(decisions), 3) if decisions else None
+    )
+
     return {
         "total_requests": len(requests),
         "labeled_requests": len(labeled),
         "route_accuracy": round(correct / len(labeled), 3) if labeled else None,
+        "route_distribution": route_distribution,
         "avoided_generation_count": avoided,
         "unsafe_reuse_count": unsafe_reuse,
+        "review_rate": round(cost.review_count / len(requests), 3) if requests else None,
+        "avg_safety_score": avg_safety,
+        "cost": cost.to_dict(),
         "decisions": [d.to_dict() for d in decisions],
     }
 
