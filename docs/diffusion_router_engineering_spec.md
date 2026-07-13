@@ -1,7 +1,8 @@
 # EPIC Diffusion Router Engineering Spec
 
-Status: Phase 1 (model-aware planning) and Phase 2 (continuity evals)
-implemented. Phases 3 and 4 are future work.
+Status: Phases 1 (model-aware planning), 2 (continuity evals), and 4 (review
+report) implemented. Phase 3 (toy diffusion backend) is deliberately skipped
+for now; the differentiator is routing and evaluation, not sample quality.
 
 ## 1. Purpose
 
@@ -273,6 +274,7 @@ The eval runner should output:
 python examples/demo_router.py
 python examples/demo_generation_plan.py
 python -m epic_cache_router_lab.evals fixtures/prior_panels.json fixtures/requests.json
+python -m epic_cache_router_lab.report fixtures/prior_panels.json fixtures/requests.json
 python -m pytest
 ```
 
@@ -331,11 +333,12 @@ demonstrates why direct reuse is sometimes unsafe.
 Success criteria: base tests do not require ML dependencies; documentation is
 honest about scope.
 
-### Phase 4: Review Report (future)
+### Phase 4: Review Report (implemented)
 
-- JSON or Markdown review report
+- Markdown review report rendered from eval output (`report.py`)
 - route distribution summary, per-request rationale, review reasons
 - cost and safety summary
+- committed sample (`docs/sample_eval_report.md`) kept current by a test
 
 Success criteria: report is readable by a technical reviewer and traceable to
 fixture decisions and tests.

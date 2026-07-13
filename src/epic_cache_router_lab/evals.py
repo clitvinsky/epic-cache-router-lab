@@ -70,6 +70,7 @@ def evaluate(prior_path: Path, requests_path: Path) -> dict:
         "avg_drift_score": avg_drift,
         "cost": cost.to_dict(),
         "decisions": [d.to_dict() for d in decisions],
+        "plans": [plan.to_dict() for plan in plans],
         "continuity": [result.to_dict() for result in continuity],
     }
 
